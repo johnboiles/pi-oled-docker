@@ -17,13 +17,15 @@ RUN pip install -r /requirements.txt
 FROM arm32v7/python:3-slim-buster
 
 # Dependencies for running the script itself
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     # top & free
     procps \
     # A font
     ttf-dejavu \
     # ??
     libopenjp2-7 \
+    # Required for pillow
+    zlib1g libjpeg-dev libfreetype6 \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove
 
@@ -33,7 +35,7 @@ ADD requirements.txt /requirements.txt
 
 # Python dependencies
 RUN pip install -r /requirements.txt \
-    && rm -rf ~/.cache/pip
+    && rm -rf /root/.cache
 
 ADD . /pi-oled
 
