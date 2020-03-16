@@ -1,0 +1,19 @@
+[Unit]
+Description=Pi OLED Driver
+Requires=docker.service
+After=docker.service
+
+[Service]
+# Uncomment to have systemd automatically restart this process if it fails
+#Restart=always
+
+# In case we didn't shut down properly, try to remove any container with the same name
+ExecStartPre=-/usr/bin/docker rm -f pi-oled
+# Don't timeout (pull can take a while)
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker pull johnboiles/pi-oled
+ExecStart=/usr/bin/docker run --name pi-oled --rm --net=host --privileged  --device /dev/mem johnboiles/pi-oled
+ExecStop=/usr/bin/docker stop -t 30 pi-oled
+
+[Install]
+WantedBy=default.target

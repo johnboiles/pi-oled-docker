@@ -1,0 +1,5 @@
+adafruit-blinka
+adafruit-circuitpython-rgb-display
+pillow
+RPI.GPIO
+setuptools
